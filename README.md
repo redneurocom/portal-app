@@ -1,59 +1,267 @@
-# PortalApp
+# portal-app
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+## Descripción del proyecto
 
-## Development server
+`portal-app` es una aplicación web desarrollada con Angular para gestionar la reserva de áreas comunes en edificios y condominios residenciales, tales como piscina, sala de reuniones, zona de parrillas u otros espacios compartidos.
 
-To start a local development server, run:
+La solución está orientada a mejorar la organización de las reservas, reducir cruces de horario y facilitar el control por parte de la administración del edificio o condominio.
 
-```bash
-ng serve
+## Objetivo
+
+Implementar una aplicación web que permita a los residentes:
+
+- visualizar las áreas comunes disponibles;
+- consultar horarios de uso;
+- registrar reservas;
+- tener un mejor control sobre sus solicitudes.
+
+Además, el sistema podrá contemplar una vista administrativa para supervisar y gestionar las reservas registradas.
+
+## Tecnologías utilizadas
+
+- Angular
+- TypeScript
+- HTML
+- CSS
+- Node.js
+- npm
+- Git
+- GitHub
+
+## Estructura general del proyecto
+
+Este proyecto fue generado con Angular CLI y actualmente cuenta con una estructura base similar a la siguiente:
+
+```text
+portal-app/
+├── public/
+├── src/
+├── .editorconfig
+├── .gitignore
+├── .prettierrc
+├── angular.json
+├── package.json
+├── package-lock.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+└── tsconfig.spec.json
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requisitos previos para continuar el proyecto
 
-## Code scaffolding
+Antes de clonar o ejecutar el proyecto, se recomienda tener instalado lo siguiente en la PC:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 1. Git
 
-```bash
-ng generate component component-name
-```
+Permite clonar el repositorio, descargar cambios y subir commits.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Verificar instalación:
 
 ```bash
-ng generate --help
+git --version
 ```
 
-## Building
+Si no está instalado, debe instalarse previamente.
 
-To build the project run:
+### 2. Node.js
+
+Se recomienda usar una versión compatible con Angular 21.
+
+Versión recomendada para este proyecto:
+
+- **Node.js 22.14.x** o superior dentro de la rama 22.x
+
+Verificar instalación:
 
 ```bash
-ng build
+node -v
+npm -v
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 3. IDE o editor
 
-## Running unit tests
+Puede trabajarse sin problemas en cualquiera de los siguientes:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- WebStorm
+- Visual Studio Code
+
+## Configuración inicial de Git en una PC nueva
+
+Si el integrante nunca ha usado Git en su computadora, primero debe configurar su identidad local:
 
 ```bash
-ng test
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu_correo@ejemplo.com"
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Verificar configuración:
 
 ```bash
-ng e2e
+git config --global --list
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Cómo clonar el proyecto
 
-## Additional Resources
+### Opción 1: desde terminal
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Ubicarse en la carpeta donde se desea guardar el proyecto y ejecutar:
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+```
+
+Luego ingresar a la carpeta del proyecto:
+
+```bash
+cd portal-app
+```
+
+### Opción 2: desde WebStorm o VS Code
+
+También puede abrirse directamente el repositorio desde el IDE usando la opción de clonado, pero igual será necesario instalar dependencias luego de descargarlo.
+
+## Instalación de dependencias
+
+Después de clonar el proyecto, se deben instalar las dependencias definidas en `package.json`.
+
+Se recomienda usar:
+
+```bash
+npm ci
+```
+
+Si por alguna razón `npm ci` no funciona, usar:
+
+```bash
+npm install
+```
+
+## Ejecución del proyecto
+
+Una vez instaladas las dependencias, ejecutar el servidor de desarrollo con alguno de estos comandos:
+
+```bash
+npx ng serve
+```
+
+o también:
+
+```bash
+npm start
+```
+
+Luego abrir en el navegador:
+
+```text
+http://localhost:4200/
+```
+
+## Flujo básico para un integrante nuevo
+
+El flujo recomendado es este:
+
+### Paso 1: instalar herramientas
+
+Debe tener instalado:
+
+- Git
+- Node.js
+- un editor como WebStorm o VS Code
+
+### Paso 2: clonar el repositorio
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd portal-app
+```
+
+### Paso 3: instalar dependencias
+
+```bash
+npm ci
+```
+
+### Paso 4: ejecutar el proyecto
+
+```bash
+npx ng serve
+```
+
+### Paso 5: abrir el proyecto en su editor
+
+Puede abrir la carpeta `portal-app` en WebStorm o VS Code y continuar el desarrollo.
+
+## Archivos que sí deben subirse al repositorio
+
+Se deben versionar los siguientes archivos y carpetas:
+
+- `src/`
+- `public/`
+- `angular.json`
+- `package.json`
+- `package-lock.json`
+- `tsconfig.json`
+- `tsconfig.app.json`
+- `tsconfig.spec.json`
+- `.editorconfig`
+- `.gitignore`
+- `.prettierrc`
+- `README.md`
+
+## Archivos que no deben subirse
+
+No se debe subir al repositorio lo siguiente:
+
+- `node_modules/`
+- `dist/`
+- archivos temporales del sistema
+- configuraciones locales innecesarias del IDE
+
+
+## Flujo básico de trabajo con Git
+
+### Descargar cambios del repositorio
+
+```bash
+git pull
+```
+
+### Ver archivos modificados
+
+```bash
+git status
+```
+
+### Agregar cambios
+
+```bash
+git add .
+```
+
+### Crear commit
+
+```bash
+git commit -m "feat: agrega vista de reservas"
+```
+
+### Subir cambios
+
+```bash
+git push
+```
+
+## Posible estructura dentro de `src/app`
+
+```text
+src/app/
+├── components/
+├── pages/
+├── services/
+├── models/
+├── app.ts
+├── app.html
+├── app.css
+├── app.config.ts
+└── app.routes.ts
+```
