@@ -1,0 +1,92 @@
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0">Avisos</h4>
+      <p class="text-muted small mb-0">Información importante para los residentes</p>
+    </div>
+    @if (esAdmin) {
+      <button class="btn btn-primary" (click)="abrirFormularioNuevo()">+ Nuevo Aviso</button>
+    }
+  </div>
+
+  @if (mensaje) {
+    <div class="alert alert-success alert-dismissible py-2">
+      {{ mensaje }}
+      <button type="button" class="btn-close" (click)="mensaje = ''"></button>
+    </div>
+  }
+  @if (error) {
+    <div class="alert alert-danger alert-dismissible py-2">
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = ''"></button>
+    </div>
+  }
+
+  @if (mostrarFormulario) {
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">{{ avisoEditando ? 'Editar Aviso' : 'Nuevo Aviso' }}</h5>
+        <form [formGroup]="formulario" (ngSubmit)="guardarAviso()">
+          <div class="mb-3">
+            <label class="form-label">Título *</label>
+            <input type="text" class="form-control" formControlName="titulo"
+              [class.is-invalid]="formulario.get('titulo')?.invalid && formulario.get('titulo')?.touched">
+            @if (formulario.get('titulo')?.invalid && formulario.get('titulo')?.touched) {
+              <div class="invalid-feedback">El título es requerido.</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descripción *</label>
+            <textarea class="form-control" formControlName="descripcion" rows="3"
+              [class.is-invalid]="formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched"></textarea>
+            @if (formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched) {
+              <div class="invalid-feedback">La descripción es requerida.</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Fecha *</label>
+            <input type="date" class="form-control" formControlName="fecha"
+              [class.is-invalid]="formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched">
+            @if (formulario.get('fecha')?.invalid && formulario.get('fecha')?.touched) {
+              <div class="invalid-feedback">La fecha es requerida.</div>
+            }
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Publicar</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelarFormulario()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <div class="row g-3">
+    @for (aviso of avisos; track aviso.id) {
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="mb-1">{{ aviso.titulo }}</h6>
+                <p class="text-muted small mb-0">{{ aviso.fecha | date:'dd/MM/yyyy' }}</p>
+                <p class="mt-2 mb-0">{{ aviso.descripcion }}</p>
+              </div>
+              @if (esAdmin) {
+                <div class="d-flex gap-2 ms-3 flex-shrink-0">
+                  <button class="btn btn-outline-secondary btn-sm" (click)="editarAviso(aviso)">Editar</button>
+                  <button class="btn btn-outline-danger btn-sm" (click)="eliminarAviso(aviso.id)">Eliminar</button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    @empty {
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">No hay avisos publicados.</p>
+      </div>
+    }
+  </div>
+</div>

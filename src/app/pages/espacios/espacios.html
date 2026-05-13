@@ -1,0 +1,139 @@
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0">Catálogo de Espacios</h4>
+      <p class="text-muted small mb-0">Consulta y reserva los espacios disponibles</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary" (click)="cargarEspacios()">Actualizar</button>
+      @if (esAdmin) {
+        <button class="btn btn-primary" (click)="abrirFormularioNuevo()">+ Nuevo Espacio</button>
+      }
+    </div>
+  </div>
+
+  @if (mensaje) {
+    <div class="alert alert-success alert-dismissible py-2">
+      {{ mensaje }}
+      <button type="button" class="btn-close" (click)="mensaje = ''"></button>
+    </div>
+  }
+  @if (error) {
+    <div class="alert alert-danger alert-dismissible py-2">
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = ''"></button>
+    </div>
+  }
+
+  @if (mostrarFormulario) {
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">{{ espacioEditando ? 'Editar Espacio' : 'Nuevo Espacio' }}</h5>
+        <form [formGroup]="formulario" (ngSubmit)="guardarEspacio()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nombre *</label>
+              <input type="text" class="form-control" formControlName="nombre"
+                [class.is-invalid]="formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched">
+              @if (formulario.get('nombre')?.invalid && formulario.get('nombre')?.touched) {
+                <div class="invalid-feedback">El nombre es requerido.</div>
+              }
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Categoría *</label>
+              <select class="form-select" formControlName="categoria"
+                [class.is-invalid]="formulario.get('categoria')?.invalid && formulario.get('categoria')?.touched">
+                <option value="">Seleccionar...</option>
+                <option>Relax</option>
+                <option>Social</option>
+                <option>Deporte</option>
+                <option>Servicios</option>
+              </select>
+              @if (formulario.get('categoria')?.invalid && formulario.get('categoria')?.touched) {
+                <div class="invalid-feedback">La categoría es requerida.</div>
+              }
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Capacidad *</label>
+              <input type="number" class="form-control" formControlName="capacidad" min="1"
+                [class.is-invalid]="formulario.get('capacidad')?.invalid && formulario.get('capacidad')?.touched">
+              @if (formulario.get('capacidad')?.invalid && formulario.get('capacidad')?.touched) {
+                <div class="invalid-feedback">Capacidad debe ser mayor a 0.</div>
+              }
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" formControlName="descripcion" rows="2"></textarea>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Ubicación</label>
+              <input type="text" class="form-control" formControlName="ubicacion">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Precio (S/)</label>
+              <input type="number" class="form-control" formControlName="precio" min="0" step="0.50">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">URL de imagen</label>
+              <input type="text" class="form-control" formControlName="imagen" placeholder="https://...">
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+              <div class="form-check mt-3">
+                <input class="form-check-input" type="checkbox" formControlName="es_pago" id="esPago">
+                <label class="form-check-label" for="esPago">Espacio de pago</label>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelarFormulario()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Buscar por nombre o categoría..." (input)="buscar($event)">
+  </div>
+
+  <div class="row g-3">
+    @for (espacio of espaciosFiltrados; track espacio.id) {
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <img [src]="espacio.imagen || 'https://via.placeholder.com/400x200?text=Sin+imagen'"
+            class="card-img-top" alt="{{ espacio.nombre }}" style="height: 200px; object-fit: cover;">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h6 class="card-title mb-0">{{ espacio.nombre }}</h6>
+              <span class="badge bg-light text-dark border">{{ espacio.categoria }}</span>
+            </div>
+            <p class="text-muted small mb-1">📍 {{ espacio.ubicacion }} · 👥 Cap. {{ espacio.capacidad }}</p>
+            <p class="fw-bold mb-3">
+              @if (espacio.es_pago) {
+                <span class="text-primary">S/ {{ espacio.precio }}</span>
+              } @else {
+                <span class="text-success">Gratuito</span>
+              }
+            </p>
+            <div class="mt-auto d-flex gap-2">
+              <a [routerLink]="['/espacios', espacio.id]" class="btn btn-primary btn-sm flex-grow-1">
+                Ver disponibilidad
+              </a>
+              @if (esAdmin) {
+                <button class="btn btn-outline-secondary btn-sm" (click)="editarEspacio(espacio)">Editar</button>
+                <button class="btn btn-outline-danger btn-sm" (click)="eliminarEspacio(espacio.id)">Eliminar</button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    @empty {
+      <div class="col-12">
+        <p class="text-muted text-center py-4">No se encontraron espacios.</p>
+      </div>
+    }
+  </div>
+</div>

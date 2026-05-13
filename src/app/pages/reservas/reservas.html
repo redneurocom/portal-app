@@ -1,0 +1,82 @@
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0">{{ esAdmin ? 'Todas las Reservas' : 'Mis Reservas' }}</h4>
+      <p class="text-muted small mb-0">
+        {{ esAdmin ? 'Vista de administrador con todas las reservas del sistema.' : 'Aquí puedes ver y cancelar tus reservas.' }}
+      </p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary" (click)="cargarReservas()">Actualizar</button>
+      @if (!esAdmin) {
+        <a routerLink="/espacios" class="btn btn-primary">Nueva Reserva</a>
+      }
+    </div>
+  </div>
+
+  @if (mensaje) {
+    <div class="alert alert-success alert-dismissible py-2">
+      {{ mensaje }}
+      <button type="button" class="btn-close" (click)="mensaje = ''"></button>
+    </div>
+  }
+  @if (error) {
+    <div class="alert alert-danger alert-dismissible py-2">
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = ''"></button>
+    </div>
+  }
+
+  @if (reservas.length === 0) {
+    <div class="text-center py-5">
+      <p class="text-muted">No hay reservas registradas.</p>
+      @if (!esAdmin) {
+        <a routerLink="/espacios" class="btn btn-primary">Reservar un espacio</a>
+      }
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle bg-white shadow-sm rounded">
+        <thead class="table-light">
+          <tr>
+            @if (esAdmin) {
+              <th>Residente</th>
+            }
+            <th>Espacio</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th>Pago</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (reserva of reservas; track reserva.id) {
+            <tr>
+              @if (esAdmin) {
+                <td class="small">{{ reserva.nombre_usuario }}</td>
+              }
+              <td><strong>{{ reserva.nombre_espacio }}</strong></td>
+              <td class="small">{{ reserva.fecha | date:'dd/MM/yyyy' }}</td>
+              <td class="small">{{ reserva.hora }}</td>
+              <td>
+                <span class="badge {{ badgeEstado(reserva.estado) }}">{{ reserva.estado }}</span>
+              </td>
+              <td>
+                <span class="badge {{ badgePago(reserva.estado_pago) }}">{{ reserva.estado_pago }}</span>
+              </td>
+              <td>
+                @if (reserva.estado === 'confirmada') {
+                  <button class="btn btn-outline-danger btn-sm" (click)="cancelarReserva(reserva.id)">
+                    Cancelar
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

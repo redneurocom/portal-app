@@ -1,0 +1,148 @@
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="mb-0">Reclamos</h4>
+      <p class="text-muted small mb-0">
+        {{ esAdmin ? 'Gestión de reclamos de residentes.' : 'Registra y consulta tus reclamos.' }}
+      </p>
+    </div>
+    <button class="btn btn-outline-secondary" (click)="cargarReclamos()">Actualizar</button>
+  </div>
+
+  @if (mensaje) {
+    <div class="alert alert-success alert-dismissible py-2">
+      {{ mensaje }}
+      <button type="button" class="btn-close" (click)="mensaje = ''"></button>
+    </div>
+  }
+  @if (error) {
+    <div class="alert alert-danger alert-dismissible py-2">
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = ''"></button>
+    </div>
+  }
+
+  @if (!esAdmin) {
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">Nuevo Reclamo</h5>
+        <form [formGroup]="formulario" (ngSubmit)="enviarReclamo()">
+          <div class="mb-3">
+            <label class="form-label">Categoría *</label>
+            <select class="form-select" formControlName="categoria"
+              [class.is-invalid]="formulario.get('categoria')?.invalid && formulario.get('categoria')?.touched">
+              <option value="">Seleccionar categoría...</option>
+              @for (cat of categorias; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+            @if (formulario.get('categoria')?.invalid && formulario.get('categoria')?.touched) {
+              <div class="invalid-feedback">La categoría es requerida.</div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descripción *</label>
+            <textarea class="form-control" formControlName="descripcion" rows="3"
+              placeholder="Describe tu reclamo con detalle..."
+              [class.is-invalid]="formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched"></textarea>
+            @if (formulario.get('descripcion')?.invalid && formulario.get('descripcion')?.touched) {
+              <div class="invalid-feedback">La descripción es requerida.</div>
+            }
+          </div>
+          <button type="submit" class="btn btn-primary">Enviar Reclamo</button>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (esAdmin && reclamoSeleccionado) {
+    <div class="card shadow-sm mb-4 border-primary">
+      <div class="card-body">
+        <h5 class="mb-1">Responder Reclamo</h5>
+        <p class="text-muted small mb-3">Categoría: {{ reclamoSeleccionado.categoria }} · {{ reclamoSeleccionado.nombre_usuario }}</p>
+        <p class="mb-3">{{ reclamoSeleccionado.descripcion }}</p>
+        <form [formGroup]="formularioAdmin" (ngSubmit)="guardarRespuesta()">
+          <div class="mb-3">
+            <label class="form-label">Estado *</label>
+            <select class="form-select" formControlName="estado">
+              <option value="pendiente">Pendiente</option>
+              <option value="en_proceso">En proceso</option>
+              <option value="resuelto">Resuelto</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Respuesta</label>
+            <textarea class="form-control" formControlName="respuesta" rows="3"
+              placeholder="Escribe una respuesta para el residente..."></textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Guardar respuesta</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelarRespuesta()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (reclamos.length === 0) {
+    <div class="text-center py-5">
+      <p class="text-muted">No hay reclamos registrados.</p>
+    </div>
+  } @else {
+    @if (esAdmin) {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white shadow-sm rounded">
+          <thead class="table-light">
+            <tr>
+              <th>Residente</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (reclamo of reclamos; track reclamo.id) {
+              <tr [class.table-active]="reclamoSeleccionado?.id === reclamo.id">
+                <td class="small">{{ reclamo.nombre_usuario }}</td>
+                <td><span class="badge bg-light text-dark border">{{ reclamo.categoria }}</span></td>
+                <td class="small" style="max-width: 250px;">{{ reclamo.descripcion }}</td>
+                <td><span class="badge {{ badgeEstado(reclamo.estado) }}">{{ reclamo.estado }}</span></td>
+                <td class="small">{{ reclamo.fecha_creacion | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <button class="btn btn-outline-primary btn-sm" (click)="seleccionarReclamo(reclamo)">
+                    Responder
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="row g-3">
+        @for (reclamo of reclamos; track reclamo.id) {
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="badge bg-light text-dark border">{{ reclamo.categoria }}</span>
+                  <span class="badge {{ badgeEstado(reclamo.estado) }}">{{ reclamo.estado }}</span>
+                </div>
+                <p class="mb-2">{{ reclamo.descripcion }}</p>
+                @if (reclamo.respuesta) {
+                  <div class="alert alert-info py-2 small mb-0">
+                    <strong>Respuesta del administrador:</strong> {{ reclamo.respuesta }}
+                  </div>
+                }
+                <p class="text-muted small mb-0 mt-2">{{ reclamo.fecha_creacion | date:'dd/MM/yyyy' }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

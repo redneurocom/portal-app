@@ -1,0 +1,60 @@
+<div class="min-vh-100 d-flex flex-column bg-light">
+
+  <nav class="navbar bg-white border-bottom shadow-sm py-3">
+    <div class="container">
+      <span class="navbar-brand text-primary mb-0 h5"><strong>CondoReserva</strong></span>
+    </div>
+  </nav>
+
+  <div class="container d-flex justify-content-center align-items-center flex-grow-1 py-5">
+    <div class="card shadow-sm" style="width: 100%; max-width: 420px;">
+      <div class="card-body p-4">
+        <h4 class="mb-1 fw-bold">Bienvenido de nuevo</h4>
+        <p class="text-muted mb-4">Ingresa tus datos para acceder al portal.</p>
+
+        @if (error) {
+          <div class="alert alert-danger py-2">{{ error }}</div>
+        }
+
+        <form [formGroup]="formulario" (ngSubmit)="onLogin()">
+          <div class="mb-3">
+            <label class="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="correo"
+              placeholder="correo@ejemplo.com"
+              [class.is-invalid]="formulario.get('correo')?.invalid && formulario.get('correo')?.touched"
+            >
+            @if (formulario.get('correo')?.invalid && formulario.get('correo')?.touched) {
+              <div class="invalid-feedback">Ingresa un correo válido.</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="contrasena"
+              placeholder="••••••"
+              [class.is-invalid]="formulario.get('contrasena')?.invalid && formulario.get('contrasena')?.touched"
+            >
+            @if (formulario.get('contrasena')?.invalid && formulario.get('contrasena')?.touched) {
+              <div class="invalid-feedback">La contraseña es requerida.</div>
+            }
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100" [disabled]="cargando">
+            @if (cargando) { Ingresando... } @else { Iniciar Sesión }
+          </button>
+        </form>
+
+        <hr class="my-4">
+        <p class="text-muted small mb-1"><strong>Usuarios de prueba:</strong></p>
+        <p class="text-muted small mb-0">Admin: admin&#64;condoreserva.com / 123456</p>
+        <p class="text-muted small mb-0">Residente: carlos&#64;condoreserva.com / 123456</p>
+      </div>
+    </div>
+  </div>
+</div>

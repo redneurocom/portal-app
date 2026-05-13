@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+  <div class="container">
+    <a class="navbar-brand text-primary" routerLink="/inicio">
+      <strong>CondoReserva</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menuNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/inicio" routerLinkActive="active">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/espacios" routerLinkActive="active">Espacios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/reservas" routerLinkActive="active">
+            @if (esAdmin) { Reservas } @else { Mis Reservas }
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/avisos" routerLinkActive="active">Avisos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/reclamos" routerLinkActive="active">Reclamos</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        @if (usuario) {
+          <span class="text-muted small">
+            <span class="badge bg-secondary me-1">{{ usuario.rol }}</span>
+            {{ usuario.nombre }}
+          </span>
+        }
+        <button class="btn btn-outline-secondary btn-sm" (click)="logout()">Salir</button>
+      </div>
+    </div>
+  </div>
+</nav>
