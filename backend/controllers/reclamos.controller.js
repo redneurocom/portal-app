@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../db');
 
+// Lista todos los reclamos para el administrador.
 async function listarTodos(req, res) {
   try {
     const [rows] = await db.query(`
@@ -16,6 +17,7 @@ async function listarTodos(req, res) {
   }
 }
 
+// Lista los reclamos de un residente.
 async function listarPorUsuario(req, res) {
   try {
     const [rows] = await db.query(
@@ -29,6 +31,7 @@ async function listarPorUsuario(req, res) {
   }
 }
 
+// Registra un reclamo enviado por el residente.
 async function crear(req, res) {
   const { usuario_id, categoria, descripcion } = req.body;
   if (!usuario_id || !categoria || !descripcion) {
@@ -46,6 +49,7 @@ async function crear(req, res) {
   }
 }
 
+// Actualiza el estado y respuesta del reclamo.
 async function actualizar(req, res) {
   const { estado, respuesta } = req.body;
   try {

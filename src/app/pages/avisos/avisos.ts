@@ -10,6 +10,7 @@ import { Aviso } from '../../models/aviso.model';
   imports: [DatePipe, ReactiveFormsModule],
   templateUrl: './avisos.html'
 })
+// Pantalla para ver y administrar avisos.
 export class Avisos implements OnInit {
   avisos: Aviso[] = [];
   esAdmin = false;
@@ -31,11 +32,13 @@ export class Avisos implements OnInit {
     });
   }
 
+  // Carga avisos al abrir la pantalla.
   ngOnInit(): void {
     this.esAdmin = this.authService.esAdmin();
     this.cargarAvisos();
   }
 
+  // Obtiene avisos desde la API.
   cargarAvisos(): void {
     this.avisosService.listar().subscribe({
       next: (data) => {
@@ -47,6 +50,7 @@ export class Avisos implements OnInit {
     });
   }
 
+  // Abre el formulario para publicar aviso.
   abrirFormularioNuevo(): void {
     this.avisoEditando = null;
     this.formulario.reset({ fecha: new Date().toISOString().split('T')[0] });
@@ -55,6 +59,7 @@ export class Avisos implements OnInit {
     this.error = '';
   }
 
+  // Carga un aviso para editarlo.
   editarAviso(aviso: Aviso): void {
     this.avisoEditando = aviso;
     this.formulario.patchValue(aviso);
@@ -63,11 +68,13 @@ export class Avisos implements OnInit {
     this.error = '';
   }
 
+  // Cierra el formulario sin guardar.
   cancelarFormulario(): void {
     this.mostrarFormulario = false;
     this.avisoEditando = null;
   }
 
+  // Guarda un aviso nuevo o editado.
   guardarAviso(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
@@ -100,6 +107,7 @@ export class Avisos implements OnInit {
     }
   }
 
+  // Elimina logicamente un aviso.
   eliminarAviso(id: number): void {
     if (!confirm('¿Estás seguro de eliminar este aviso?')) return;
     this.avisosService.eliminar(id).subscribe({

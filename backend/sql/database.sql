@@ -57,10 +57,12 @@ CREATE TABLE IF NOT EXISTS reclamos (
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
--- Usuarios de prueba (contrasenas en texto simple para uso academico)
+-- Usuarios de prueba
 INSERT IGNORE INTO usuarios (nombre, correo, contrasena, rol) VALUES
 ('Administrador CondoReserva', 'admin@condoreserva.com', '123456', 'admin'),
-('Carlos Fernandez', 'carlos@condoreserva.com', '123456', 'residente');
+('Carlos Fernandez', 'carlos@condoreserva.com', '123456', 'residente'),
+('Administrador 2', 'admin2', '1234', 'admin'),
+('Residente 2', 'residente2', '1234', 'residente');
 
 -- Espacios iniciales
 INSERT INTO espacios (nombre, descripcion, categoria, capacidad, ubicacion, precio, es_pago, imagen, estado)

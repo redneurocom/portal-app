@@ -16,6 +16,7 @@ import { Aviso } from '../../models/aviso.model';
   imports: [RouterLink, DatePipe],
   templateUrl: './inicio.html'
 })
+// Pantalla inicial con resumen del portal.
 export class Inicio implements OnInit {
   usuario: Usuario | null = null;
   esAdmin = false;
@@ -36,6 +37,7 @@ export class Inicio implements OnInit {
     private router: Router
   ) {}
 
+  // Verifica sesion y carga la informacion inicial.
   ngOnInit(): void {
     this.usuario = this.authService.obtenerUsuario();
     if (!this.usuario) {
@@ -48,6 +50,7 @@ export class Inicio implements OnInit {
     this.cargarDatos();
   }
 
+  // Carga los datos principales segun el rol.
   cargarDatos(): void {
     this.error = '';
     this.cargarEspacios();
@@ -60,6 +63,7 @@ export class Inicio implements OnInit {
     }
   }
 
+  // Obtiene espacios para el resumen.
   private cargarEspacios(): void {
     this.espaciosService.listar().subscribe({
       next: (data) => {
@@ -72,6 +76,7 @@ export class Inicio implements OnInit {
     });
   }
 
+  // Obtiene los avisos recientes.
   private cargarAvisos(): void {
     this.avisosService.listar().subscribe({
       next: (data) => {
@@ -83,6 +88,7 @@ export class Inicio implements OnInit {
     });
   }
 
+  // Busca la proxima reserva del residente.
   private cargarReservasUsuario(): void {
     const hoy = new Date().toISOString().split('T')[0];
     this.reservasService.listarPorUsuario(this.usuario!.id).subscribe({
@@ -96,6 +102,7 @@ export class Inicio implements OnInit {
     });
   }
 
+  // Calcula totales simples para el administrador.
   private cargarEstadisticasAdmin(): void {
     this.reservasService.listarTodas().subscribe({
       next: (data) => {

@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../db');
 
+// Lista los espacios activos disponibles.
 async function listar(req, res) {
   try {
     const [rows] = await db.query("SELECT * FROM espacios WHERE estado = 'activo' ORDER BY nombre");
@@ -11,6 +12,7 @@ async function listar(req, res) {
   }
 }
 
+// Busca un espacio por su id.
 async function obtener(req, res) {
   try {
     const [rows] = await db.query('SELECT * FROM espacios WHERE id = ?', [req.params.id]);
@@ -24,6 +26,7 @@ async function obtener(req, res) {
   }
 }
 
+// Crea un nuevo espacio comun.
 async function crear(req, res) {
   const { nombre, descripcion, categoria, capacidad, ubicacion, precio, es_pago, imagen } = req.body;
   if (!nombre || !categoria || !capacidad) {
@@ -41,6 +44,7 @@ async function crear(req, res) {
   }
 }
 
+// Actualiza los datos de un espacio.
 async function actualizar(req, res) {
   const { nombre, descripcion, categoria, capacidad, ubicacion, precio, es_pago, imagen } = req.body;
   try {
@@ -55,6 +59,7 @@ async function actualizar(req, res) {
   }
 }
 
+// Marca un espacio como inactivo.
 async function eliminar(req, res) {
   try {
     await db.query("UPDATE espacios SET estado = 'inactivo' WHERE id = ?", [req.params.id]);

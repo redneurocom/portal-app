@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../db');
 
+// Lista todas las reservas para el administrador.
 async function listarTodas(req, res) {
   try {
     const [rows] = await db.query(`
@@ -17,6 +18,7 @@ async function listarTodas(req, res) {
   }
 }
 
+// Lista las reservas de un residente.
 async function listarPorUsuario(req, res) {
   try {
     const [rows] = await db.query(`
@@ -33,6 +35,7 @@ async function listarPorUsuario(req, res) {
   }
 }
 
+// Crea una reserva si no existe cruce de horario.
 async function crear(req, res) {
   const { usuario_id, espacio_id, fecha, hora } = req.body;
   if (!usuario_id || !espacio_id || !fecha || !hora) {
@@ -61,6 +64,7 @@ async function crear(req, res) {
   }
 }
 
+// Cambia una reserva a estado cancelada.
 async function cancelar(req, res) {
   try {
     await db.query("UPDATE reservas SET estado = 'cancelada' WHERE id = ?", [req.params.id]);

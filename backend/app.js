@@ -7,11 +7,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Registra en consola cada peticion recibida.
 app.use((req, res, next) => {
-  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  res.on('finish', () => {
+    console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl} ${res.statusCode}`);
+  });
   next();
 });
 
+// Rutas principales de la API REST.
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/espacios', require('./routes/espacios.routes'));
 app.use('/api/reservas', require('./routes/reservas.routes'));

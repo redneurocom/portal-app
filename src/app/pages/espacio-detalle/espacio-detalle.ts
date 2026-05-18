@@ -11,6 +11,7 @@ import { Espacio } from '../../models/espacio.model';
   imports: [ReactiveFormsModule],
   templateUrl: './espacio-detalle.html'
 })
+// Pantalla de detalle y reserva de un espacio.
 export class EspacioDetalle implements OnInit {
   espacio: Espacio | null = null;
   formulario: FormGroup;
@@ -42,6 +43,7 @@ export class EspacioDetalle implements OnInit {
     });
   }
 
+  // Carga el espacio seleccionado por la URL.
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.espaciosService.obtener(id).subscribe({
@@ -52,10 +54,12 @@ export class EspacioDetalle implements OnInit {
     });
   }
 
+  // Fecha minima permitida para reservar.
   get fechaMinima(): string {
     return new Date().toISOString().split('T')[0];
   }
 
+  // Envia la solicitud de reserva.
   reservar(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
@@ -90,6 +94,7 @@ export class EspacioDetalle implements OnInit {
     });
   }
 
+  // Regresa al listado de espacios.
   volver(): void {
     this.router.navigate(['/espacios']);
   }

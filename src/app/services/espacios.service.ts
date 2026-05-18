@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Espacio } from '../models/espacio.model';
+import { obtenerApiBase } from './api.config';
 
 @Injectable({ providedIn: 'root' })
 export class EspaciosService {
-  private apiUrl = 'http://localhost:3000/api/espacios';
+  private apiUrl = `${obtenerApiBase()}/espacios`;
 
   constructor(private http: HttpClient) {}
 

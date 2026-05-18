@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [ReactiveFormsModule],
   templateUrl: './login.html'
 })
+// Pantalla para ingresar al sistema.
 export class Login {
   formulario: FormGroup;
   error = '';
@@ -19,7 +20,7 @@ export class Login {
     private router: Router
   ) {
     this.formulario = this.fb.group({
-      correo: ['', [Validators.required, Validators.email]],
+      correo: ['', Validators.required],
       contrasena: ['', Validators.required]
     });
 
@@ -28,6 +29,7 @@ export class Login {
     }
   }
 
+  // Envia las credenciales al backend.
   onLogin(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();

@@ -18,16 +18,16 @@
 
         <form [formGroup]="formulario" (ngSubmit)="onLogin()">
           <div class="mb-3">
-            <label class="form-label">Correo electrónico</label>
+            <label class="form-label">Usuario o correo electrónico</label>
             <input
-              type="email"
+              type="text"
               class="form-control"
               formControlName="correo"
-              placeholder="correo@ejemplo.com"
+              placeholder="admin2 o correo@ejemplo.com"
               [class.is-invalid]="formulario.get('correo')?.invalid && formulario.get('correo')?.touched"
             >
             @if (formulario.get('correo')?.invalid && formulario.get('correo')?.touched) {
-              <div class="invalid-feedback">Ingresa un correo válido.</div>
+              <div class="invalid-feedback">Ingresa tu usuario o correo.</div>
             }
           </div>
 

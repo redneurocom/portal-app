@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reclamo } from '../models/reclamo.model';
+import { obtenerApiBase } from './api.config';
 
 @Injectable({ providedIn: 'root' })
 export class ReclamosService {
-  private apiUrl = 'http://localhost:3000/api/reclamos';
+  private apiUrl = `${obtenerApiBase()}/reclamos`;
 
   constructor(private http: HttpClient) {}
 

@@ -10,6 +10,7 @@ import { Reclamo } from '../../models/reclamo.model';
   imports: [DatePipe, ReactiveFormsModule],
   templateUrl: './reclamos.html'
 })
+// Pantalla para registrar y responder reclamos.
 export class Reclamos implements OnInit {
   reclamos: Reclamo[] = [];
   esAdmin = false;
@@ -37,11 +38,13 @@ export class Reclamos implements OnInit {
     });
   }
 
+  // Define el rol y carga reclamos.
   ngOnInit(): void {
     this.esAdmin = this.authService.esAdmin();
     this.cargarReclamos();
   }
 
+  // Carga todos los reclamos o solo los del usuario.
   cargarReclamos(): void {
     const usuario = this.authService.obtenerUsuario();
     if (!usuario) return;
@@ -67,6 +70,7 @@ export class Reclamos implements OnInit {
     }
   }
 
+  // Envia un reclamo nuevo.
   enviarReclamo(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
@@ -90,6 +94,7 @@ export class Reclamos implements OnInit {
     });
   }
 
+  // Selecciona un reclamo para responder.
   seleccionarReclamo(reclamo: Reclamo): void {
     this.reclamoSeleccionado = reclamo;
     this.formularioAdmin.patchValue({
@@ -100,10 +105,12 @@ export class Reclamos implements OnInit {
     this.error = '';
   }
 
+  // Cancela la respuesta del administrador.
   cancelarRespuesta(): void {
     this.reclamoSeleccionado = null;
   }
 
+  // Guarda estado y respuesta del reclamo.
   guardarRespuesta(): void {
     if (this.formularioAdmin.invalid) {
       this.formularioAdmin.markAllAsTouched();
@@ -121,6 +128,7 @@ export class Reclamos implements OnInit {
     });
   }
 
+  // Devuelve el color visual del estado.
   badgeEstado(estado: string): string {
     const mapa: Record<string, string> = {
       pendiente: 'bg-warning text-dark',

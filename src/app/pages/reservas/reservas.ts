@@ -10,6 +10,7 @@ import { Reserva } from '../../models/reserva.model';
   imports: [DatePipe, RouterLink],
   templateUrl: './reservas.html'
 })
+// Pantalla para consultar y cancelar reservas.
 export class Reservas implements OnInit {
   reservas: Reserva[] = [];
   esAdmin = false;
@@ -21,11 +22,13 @@ export class Reservas implements OnInit {
     private reservasService: ReservasService
   ) {}
 
+  // Define el rol y carga reservas.
   ngOnInit(): void {
     this.esAdmin = this.authService.esAdmin();
     this.cargarReservas();
   }
 
+  // Carga todas las reservas o solo las del usuario.
   cargarReservas(): void {
     const usuario = this.authService.obtenerUsuario();
     if (!usuario) return;
@@ -51,6 +54,7 @@ export class Reservas implements OnInit {
     }
   }
 
+  // Cancela una reserva seleccionada.
   cancelarReserva(id: number): void {
     if (!confirm('¿Estás seguro de cancelar esta reserva?')) return;
     this.reservasService.cancelar(id).subscribe({
@@ -64,6 +68,7 @@ export class Reservas implements OnInit {
     });
   }
 
+  // Devuelve el color visual del estado.
   badgeEstado(estado: string): string {
     const mapa: Record<string, string> = {
       confirmada: 'bg-success',
@@ -73,6 +78,7 @@ export class Reservas implements OnInit {
     return mapa[estado] || 'bg-secondary';
   }
 
+  // Devuelve el color visual del pago.
   badgePago(estadoPago: string): string {
     const mapa: Record<string, string> = {
       pagado: 'bg-success',

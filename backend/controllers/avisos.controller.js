@@ -1,6 +1,7 @@
 'use strict';
 const db = require('../db');
 
+// Lista los avisos activos para mostrarlos en el portal.
 async function listar(req, res) {
   try {
     const [rows] = await db.query(
@@ -13,6 +14,7 @@ async function listar(req, res) {
   }
 }
 
+// Registra un nuevo aviso creado por el administrador.
 async function crear(req, res) {
   const { titulo, descripcion, fecha } = req.body;
   if (!titulo || !descripcion) {
@@ -31,6 +33,7 @@ async function crear(req, res) {
   }
 }
 
+// Actualiza los datos de un aviso existente.
 async function actualizar(req, res) {
   const { titulo, descripcion, fecha, estado } = req.body;
   try {
@@ -45,6 +48,7 @@ async function actualizar(req, res) {
   }
 }
 
+// Marca un aviso como inactivo para ocultarlo.
 async function eliminar(req, res) {
   try {
     await db.query("UPDATE avisos SET estado = 'inactivo' WHERE id = ?", [req.params.id]);

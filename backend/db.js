@@ -2,6 +2,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+// Crea la conexion compartida con MySQL.
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
